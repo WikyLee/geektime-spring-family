@@ -12,8 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.convert.CustomConversions;
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
-import org.springframework.data.r2dbc.dialect.Dialect;
-import org.springframework.data.r2dbc.function.convert.R2dbcCustomConversions;
+import org.springframework.data.r2dbc.convert.R2dbcCustomConversions;
+import org.springframework.data.r2dbc.dialect.R2dbcDialect;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
@@ -33,6 +33,7 @@ public class ReactiveSpringbucksApplication extends AbstractR2dbcConfiguration {
     }
 
     @Bean
+    @Override
     public ConnectionFactory connectionFactory() {
         return new H2ConnectionFactory(
                 H2ConnectionConfiguration.builder()
@@ -42,8 +43,9 @@ public class ReactiveSpringbucksApplication extends AbstractR2dbcConfiguration {
     }
 
     @Bean
+    @Override
     public R2dbcCustomConversions r2dbcCustomConversions() {
-        Dialect dialect = getDialect(connectionFactory());
+        R2dbcDialect dialect = getDialect(connectionFactory());
         CustomConversions.StoreConversions storeConversions =
                 CustomConversions.StoreConversions.of(dialect.getSimpleTypeHolder());
         return new R2dbcCustomConversions(storeConversions,
