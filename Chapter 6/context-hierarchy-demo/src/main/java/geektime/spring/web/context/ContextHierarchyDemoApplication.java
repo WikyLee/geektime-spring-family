@@ -20,6 +20,7 @@ public class ContextHierarchyDemoApplication implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
+		// fooContext为barContext的父级上下文
 		ApplicationContext fooContext = new AnnotationConfigApplicationContext(FooConfig.class);
 		ClassPathXmlApplicationContext barContext = new ClassPathXmlApplicationContext(
 				new String[] {"applicationContext.xml"}, fooContext);
